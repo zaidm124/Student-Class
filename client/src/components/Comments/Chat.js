@@ -87,7 +87,7 @@ function Chat(props) {
             ? chatMessage.map((message) => {
                 if (
                   message.email === props.email ||
-                  props.email === "studentClassroom2024@gmail.com"
+                  props.email === "zaidm124@gmail.com"
                 ) {
                   return (
                     <div className="after-main-announcement-box-chats">

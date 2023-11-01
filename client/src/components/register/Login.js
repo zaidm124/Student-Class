@@ -73,7 +73,7 @@ function Login(props) {
         if (response.data.auth) {
           props.history.push({
             pathname: "/home",
-            state: { login: localStorage.getItem("email") },
+            state: { login: response.data.user.email },
           });
         }
       });
@@ -89,17 +89,20 @@ function Login(props) {
     setload(true);
     setTimeout(() => {
       if (email) {
-        db.collection("signin").onSnapshot((snapshot) => {
-          snapshot.docs.map((doc) => {
-            if (doc.data().email === email) {
-              flag = 1;
-              axios
+        db.collection("batch").onSnapshot((snapshot)=>{
+          snapshot.docs.map((doc)=>{
+            console.log(doc.id);
+            db.collection("batch").doc(doc.id).collection("user").onSnapshot(snapshot=>{
+              snapshot.docs.map(doc=>{
+                if(doc.data().email==email){
+                  flag=1;
+                  axios
                 .post("/login", {
                   email: doc.data().email,
                   correctPass: doc.data().password,
                   userPass: password,
-                })
-                .then((response) => {
+                  username:doc.data().username
+                }).then((response)=>{
                   if (response.data.auth) {
                     localStorage.setItem("token", response.data.token);
                     localStorage.setItem("email", email);
@@ -111,14 +114,16 @@ function Login(props) {
                   } else {
                     window.alert("Invalid credentials");
                   }
-                });
-            }
-            setload(false);
-          });
-          if (flag == 0) {
-            window.alert("Invalid Credentials");
-          }
-        });
+                })
+                }
+                setload(false);
+              })
+              if(flag==0){
+                window.alert("Invalid Credentials")
+              }
+            })
+          })
+        })
       }
       setload(false);
     }, 1000);

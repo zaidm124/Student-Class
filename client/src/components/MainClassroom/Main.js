@@ -440,7 +440,7 @@ function Main(props) {
                     </div>
                     {props.location.state?.userDetails.email === res?.email ||
                     props.location.state?.userDetails.email ===
-                      "studentClassroom2024@gmail.com" ? (
+                      "zaidm124@gmail.com" ? (
                       <div className="delee">
                         <i
                           style={{ cursor: "pointer" }}
@@ -482,7 +482,7 @@ function Main(props) {
                     </div>
                     {props.location.state?.userDetails.email === res?.email ||
                     props.location.state?.userDetails.email ===
-                      "studentClassroom2024@gmail.com" ? (
+                      "zaidm124@gmail.com" ? (
                       <div className="batch-main-page-middle-boxes-i del">
                         <i
                           style={{ cursor: "pointer" }}
@@ -524,7 +524,7 @@ function Main(props) {
                     </div>
                     {props.location.state?.userDetails.email === res?.email ||
                     props.location.state?.userDetails.email ===
-                      "studentClassroom2024@gmail.com" ? (
+                      "zaidm124@gmail.com" ? (
                       <div className="batch-main-page-middle-boxes-i del">
                         <i
                           style={{ cursor: "pointer" }}

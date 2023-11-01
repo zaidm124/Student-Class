@@ -7,10 +7,9 @@ const bcrypt = require("bcrypt");
 const verifyJWT = (req, res, next) => {
   const token = req.headers["x-access-token"];
   if (!token) {
-    console.log(token);
     res.send("We need a token, please give it to us next time");
   } else {
-    jwt.verify(token, "jwtSecret", (err, decoded) => {
+    jwt.verify(token, process.env.JWTSECRET, (err, decoded) => {
       if (err) {
         res.json({ auth: false, message: "you have failed to authenticate" });
       } else {
@@ -28,11 +27,11 @@ router.get("/isUserAuth", verifyJWT, (req, res) => {
 
 
 router.post("/register", async (req, res) => {
-  const email = req.email;
+  const email = req.body;
   const token = jwt.sign({ email }, "jwtSecret", {
     expiresIn: "10d",
   });
-  res.json({ auth: true, token: token });
+  res.json({ auth: true, token: token,email });
 });
 
 module.exports = router;

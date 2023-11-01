@@ -43,8 +43,7 @@ function Signup(props) {
       } else {
         if (
           password &&
-          password === confirm &&
-          email.includes("@iiitsurat.ac.in")
+          password === confirm
         ) {
           setload(true);
           emailjs
@@ -83,64 +82,41 @@ function Signup(props) {
     const actualCode = props.cod;
 
     if (code.toString() === actualCode.toString()) {
-      axios
-        .post("/register", {
-          email: email,
-        })
-        .then((response) => {
-          if (response.data.auth) {
-            localStorage.setItem("token", response.data.token);
-            localStorage.setItem("email", email);
-
-            axios
-              .post("/hash", {
-                password: password,
-              })
-              .then((response) => {
-                db.collection("signup").add({
-                  email,
-                  password: response.data.secPass,
-                  confirm: response.data.secPass,
-                });
-
-                db.collection("batch").onSnapshot((snap) => {
-                  snap.docs.map((doc) => {
-                    if (doc.data().number === 2024) {
-                      setId(doc.id);
-                      // console.log(doc.data().number);
-                      // console.log(id);
-                      db.collection("batch")
-                        .doc(doc.id)
-                        .collection("user")
-                        .add({
-                          batch: 2024,
-                          email: email,
-                          username: "",
-                          url: "",
-                        });
-                    }
-                  });
-                });
-
-                db.collection("signin")
+      axios.post("/register",{
+        email,
+        password
+      }).then((response)=>{
+        console.log(response.data.auth)
+        if(response.data.auth){
+          db.collection("batch").onSnapshot((snap) => {
+            snap.docs.map((doc) => {
+              if (doc.data().number === 2024) {
+                setId(doc.id);
+                db.collection("batch")
+                  .doc(doc.id)
+                  .collection("user")
                   .add({
-                    email,
-                    password: response.data.secPass,
-                  })
-                  .then(() => {
+                    batch: 2024,
+                    email: email,
+                    username: "",
+                    password:response.data.userInfo.hashPass,
+                    url: "",
+                  }).then(()=>{
                     props.history.push({
                       pathname: "/home",
                       state: { signup: email },
                     });
                   });
-              });
-          } else {
-            alert("Error in signing up");
-          }
-        });
+              }else{
+                window.alert("Error Signing up")
+              }
+            });
+          });
+        }
 
-      // console.log(actualCode.toString());
-      // console.log(code.toString());
+        
+      })
+      
     } else {
       alert("wrong code");
     }
@@ -224,3 +200,63 @@ function Signup(props) {
 }
 
 export default withRouter(Signup);
+
+
+// axios
+//         .post("/register", {
+//           email: email,
+//         })
+//         .then((response) => {
+//           if (response.data.auth) {
+//             localStorage.setItem("token", response.data.token);
+//             localStorage.setItem("email", email);
+
+//             axios
+//               .post("/hash", {
+//                 password: password,
+//               })
+//               .then((response) => {
+//                 db.collection("signup").add({
+//                   email,
+//                   password: response.data.secPass,
+//                   confirm: response.data.secPass,
+//                 });
+
+                // db.collection("batch").onSnapshot((snap) => {
+                //   snap.docs.map((doc) => {
+                //     if (doc.data().number === 2024) {
+                //       setId(doc.id);
+                //       // console.log(doc.data().number);
+                //       // console.log(id);
+                //       db.collection("batch")
+                //         .doc(doc.id)
+                //         .collection("user")
+                //         .add({
+                //           batch: 2024,
+                //           email: email,
+                //           username: "",
+                //           url: "",
+                //         });
+                //     }
+                //   });
+                // });
+
+//                 db.collection("signin")
+//                   .add({
+//                     email,
+//                     password: response.data.secPass,
+//                   })
+//                   .then(() => {
+//                     props.history.push({
+//                       pathname: "/home",
+//                       state: { signup: email },
+//                     });
+//                   });
+//               });
+//           } else {
+//             alert("Error in signing up");
+//           }
+//         });
+
+//       // console.log(actualCode.toString());
+//       // console.log(code.toString());

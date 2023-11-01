@@ -58,6 +58,7 @@ function Home (props) {
             if (!response.data.auth) {
                 props.history.push('/');
             } else {
+                // console.log(response.data.user)
             }
         });
     };

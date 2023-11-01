@@ -28,14 +28,22 @@ function ForgetPass(prop) {
     e.preventDefault();
     let flag = 1;
     const data = await new Promise(function (resolve, reject) {
-      db.collection("signin").onSnapshot((snap) => {
-        snap.docs.map((doc) => {
-          if (doc.data().email == ForgotEmail) {
-            flag = 0;
-            resolve(true);
-          } else {
-            resolve(true);
-          }
+      db.collection("batch").onSnapshot((snapshot) => {
+        snapshot.docs.map((doc) => {
+          console.log(doc.id);
+          db.collection("batch")
+            .doc(doc.id)
+            .collection("user")
+            .onSnapshot((snapshot) => {
+              snapshot.docs.map((doc) => {
+                if (doc.data().email == ForgotEmail) {
+                  flag = 0;
+                  resolve(true);
+                } else {
+                  resolve(true);
+                }
+              });
+            });
         });
       });
     }).then(() => {
@@ -86,20 +94,44 @@ function ForgetPass(prop) {
         password: newPassword,
       })
       .then((response) => {
-        db.collection("signin").onSnapshot((snap) => {
-          snap.docs.map((doc) => {
-            if (doc.data().email === ForgotEmail) {
-              db.collection("signin")
-                .doc(doc.id)
-                .update({
-                  password: response.data.secPass,
-                })
-                .then(() => {
-                  alert("password has been changed");
+        db.collection("batch").onSnapshot((snapshot) => {
+          snapshot.docs.map((doc) => {
+            console.log(doc.id);
+            db.collection("batch")
+              .doc(doc.id)
+              .collection("user")
+              .onSnapshot((snapshot) => {
+                snapshot.docs.map((doc2) => {
+                  if (doc2.data().email == ForgotEmail) {
+                    db.collection("batch")
+                      .doc(doc.id)
+                      .collection("user")
+                      .doc(doc2.id)
+                      .update({
+                        password: response.data.secPass,
+                      })
+                      .then(() => {
+                        alert("password has been changed");
+                      });
+                  }
                 });
-            }
+              });
           });
         });
+        // db.collection("signin").onSnapshot((snap) => {
+        //   snap.docs.map((doc) => {
+        //     if (doc.data().email === ForgotEmail) {
+        //       db.collection("signin")
+        //         .doc(doc.id)
+        //         .update({
+        //           password: response.data.secPass,
+        //         })
+        //         .then(() => {
+        //           alert("password has been changed");
+        //         });
+        //     }
+        //   });
+        // });
       })
       .then(() => {});
   };
@@ -166,7 +198,7 @@ function ForgetPass(prop) {
                 <button onClick={checkCode}>Submit</button>
               </div>
             </div>
-          {loading()}
+            {loading()}
           </form>
           {() => checkForgotEmail()}
         </>
