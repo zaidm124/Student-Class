@@ -27,14 +27,12 @@ function Main(props) {
 
   //   for drop down
   let dropMenu;
-  if(props.location.state.batchName == 'CSE'){
-  dropMenu = ["CN", "DAA", "DBMS", "OOT", "OS", "SS", "All"];
-  }
-  else if(props.location.state.batchName == 'ECE'){
-    dropMenu = ["OS","CN","AC","DC","MicroCont","EM","All"];
-  }
-  else{
-    dropMenu = ["CN", "DAA", "DBMS", "OOT", "OS", "SS","AC","DC","MicroCont","EM", "All"];
+  if (props.location.state.batchName == "CSE") {
+    dropMenu = ["AI", "NLP", "B&L", "NS", "I&E", "WEB2.0", "CCEP", "All"];
+  } else if (props.location.state.batchName == "ECE") {
+    dropMenu = ["AI", "IOT", "B&L", "IPCV", "I&E", "WEB2.0", "CCEP", "All"];
+  } else {
+    dropMenu = ["AI", "B&L", "I&E", "WEB2.0", "CCEP", "All"];
   }
   const [dropItem, setDropItem] = useState("Select Subject");
 
@@ -428,7 +426,7 @@ function Main(props) {
                       <div className="batch-main-page-middle-boxes-date-and-title">
                         <div className="batch-main-page-middle-boxes-title">
                           <h2>
-                            {res.author} Posted New Document : {res.title}
+                            {res.author} Posted New Announcement : {res.title}
                           </h2>
                         </div>
                         <h4>
@@ -470,7 +468,7 @@ function Main(props) {
                       <div className="batch-main-page-middle-boxes-date-and-title">
                         <div className="batch-main-page-middle-boxes-title">
                           <h2>
-                            {res.author} Posted New Document : {res.title}
+                            {res.author} Posted New Announcement : {res.title}
                           </h2>
                         </div>
                         <h4>
@@ -512,7 +510,7 @@ function Main(props) {
                       <div className="batch-main-page-middle-boxes-date-and-title">
                         <div className="batch-main-page-middle-boxes-title">
                           <h2>
-                            {res.author} Posted New Document : {res.title}
+                            {res.author} Posted New Announcement : {res.title}
                           </h2>
                         </div>
                         <h4>

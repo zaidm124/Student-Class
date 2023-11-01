@@ -42,14 +42,14 @@ app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "client/build", "index.html"));
 });
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
-}
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static("client/build"));
+// }
 
-app.post("/hash", async (req, res) => {
-  const secPass = await bcrypt.hash(req.body.password, 10);
-  res.json({ secPass });
-});
+// app.post("/hash", async (req, res) => {
+//   const secPass = await bcrypt.hash(req.body.password, 10);
+//   res.json({ secPass });
+// });
 
 // app.post('/login', async (req, res) => {
 //     const email = req.body.email;
